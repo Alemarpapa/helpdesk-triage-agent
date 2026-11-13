@@ -1,0 +1,9 @@
+[
+  { "id": "m-01", "from": "dana.wu@blueharbor.example", "to": ["lead@helpdesk.example"], "subject": "Terminal still offline", "body": "Could you confirm an ETA for the fix? We open again at 2pm.", "receivedAt": "2026-03-10T10:30:00Z", "unread": true },
+  { "id": "m-02", "from": "finance@pinecrest.example", "to": ["lead@helpdesk.example"], "subject": "Corrected invoice", "body": "We need your approval on the corrected invoice before Friday.", "receivedAt": "2026-03-09T16:00:00Z", "unread": true },
+  { "id": "m-03", "from": "no-reply@status.example", "to": ["lead@helpdesk.example"], "subject": "Action required: verify your address", "body": "Please verify your address.", "receivedAt": "2026-03-10T07:00:00Z", "unread": true },
+  { "id": "m-04", "from": "omar@helpdesk.example", "to": ["team@helpdesk.example"], "cc": ["lead@helpdesk.example"], "subject": "Printer driver notes", "body": "Can you all check the notes I left on the ticket?", "receivedAt": "2026-03-10T09:00:00Z", "unread": true },
+  { "id": "m-05", "from": "kai@cedarhill.example", "to": ["lead@helpdesk.example"], "subject": "Thanks!", "body": "The export works now. Thanks for the quick help.", "receivedAt": "2026-03-10T11:00:00Z", "unread": true },
+  { "id": "m-06", "from": "dana.wu@blueharbor.example", "to": ["lead@helpdesk.example"], "subject": "Contract renewal", "body": "Please send the renewal quote when you can.", "receivedAt": "2026-03-06T09:00:00Z", "unread": true },
+  { "id": "m-07", "from": "rosa@helpdesk.example", "to": ["lead@helpdesk.example"], "subject": "Shift swap", "body": "Can you approve my shift swap for Thursday?", "receivedAt": "2026-03-10T08:00:00Z", "unread": false }
+]

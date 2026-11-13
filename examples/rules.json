@@ -1,0 +1,29 @@
+{
+  "technicians": [
+    { "id": "tech-rosa", "name": "Rosa Lima", "maxOpenTickets": 4 },
+    { "id": "tech-omar", "name": "Omar Haddad", "maxOpenTickets": 4 },
+    { "id": "tech-lin", "name": "Lin Chen", "maxOpenTickets": 3 }
+  ],
+  "rules": [
+    {
+      "id": "urgent-outage",
+      "when": { "priorities": ["urgent"], "keywords": ["outage", "down", "offline"] },
+      "candidates": ["tech-lin", "tech-rosa"]
+    },
+    {
+      "id": "key-account-northwind",
+      "when": { "clients": ["Northwind Bakery"] },
+      "candidates": ["tech-rosa"]
+    },
+    {
+      "id": "billing",
+      "when": { "keywords": ["invoice", "billing", "refund"] },
+      "candidates": ["tech-omar", "tech-rosa"]
+    },
+    {
+      "id": "access",
+      "when": { "keywords": ["password", "login", "2FA", "locked out"] },
+      "candidates": ["tech-lin", "tech-omar"]
+    }
+  ]
+}

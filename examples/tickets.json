@@ -1,0 +1,12 @@
+[
+  { "id": "T-1001", "subject": "Card terminal offline at the front counter", "description": "Since 8am the terminal shows no connection. Customers are queuing.", "client": "Blue Harbor Logistics", "priority": "urgent", "createdAt": "2026-03-10T08:05:00Z" },
+  { "id": "T-1002", "subject": "Invoice shows the wrong tax rate", "description": "March invoice was issued with 5% instead of 10%.", "client": "Pinecrest Dental", "priority": "high", "createdAt": "2026-03-10T08:40:00Z" },
+  { "id": "T-1003", "subject": "New employee needs a login", "description": "Please create an account for our new receptionist.", "client": "Northwind Bakery", "priority": "normal", "createdAt": "2026-03-10T09:10:00Z" },
+  { "id": "T-1004", "subject": "Locked out after too many attempts", "description": "My password stopped working this morning.", "client": "Pinecrest Dental", "priority": "normal", "createdAt": "2026-03-10T09:25:00Z" },
+  { "id": "T-1005", "subject": "How do I export last month's report?", "description": "Looking for a CSV export option.", "client": "Cedar Hill Vets", "priority": "low", "createdAt": "2026-03-10T09:50:00Z" },
+  { "id": "T-1006", "subject": "Refund not showing on statement", "description": "Refund issued a week ago is still missing.", "client": "Blue Harbor Logistics", "priority": "normal", "createdAt": "2026-03-10T10:15:00Z" },
+  { "id": "T-0990", "subject": "Printer driver keeps crashing", "description": "", "client": "Cedar Hill Vets", "priority": "normal", "status": "in_progress", "assigneeId": "tech-omar", "createdAt": "2026-03-09T14:00:00Z" },
+  { "id": "T-0991", "subject": "Weekly backup failed twice", "description": "", "client": "Northwind Bakery", "priority": "high", "status": "in_progress", "assigneeId": "tech-rosa", "createdAt": "2026-03-09T15:30:00Z" },
+  { "id": "T-0992", "subject": "Slow sync between branches", "description": "", "client": "Blue Harbor Logistics", "priority": "normal", "status": "pending", "assigneeId": "tech-rosa", "createdAt": "2026-03-09T16:10:00Z" },
+  { "id": "T-0985", "subject": "Email signature update", "description": "", "client": "Pinecrest Dental", "priority": "low", "status": "resolved", "assigneeId": "tech-lin", "createdAt": "2026-03-08T11:00:00Z" }
+]
