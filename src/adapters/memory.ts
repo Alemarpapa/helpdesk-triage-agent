@@ -59,7 +59,7 @@ export class InMemoryMail implements MailAdapter {
   }
 }
 
-function readJsonArray<T>(file: string, schema: z.ZodType<T, z.ZodTypeDef, unknown>): T[] {
+function readJsonArray<T>(file: string, schema: z.ZodType<T>): T[] {
   if (!fs.existsSync(file)) return [];
   return z.array(schema).parse(JSON.parse(fs.readFileSync(file, 'utf8')));
 }
