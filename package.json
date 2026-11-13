@@ -1,0 +1,35 @@
+{
+  "name": "helpdesk-triage-agent",
+  "version": "1.0.0",
+  "description": "Rule-based helpdesk triage that proposes ticket assignments and applies nothing until a human approves",
+  "type": "module",
+  "main": "dist/cli.js",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit -p tsconfig.test.json",
+    "test": "vitest run",
+    "triage": "tsx src/cli.ts"
+  },
+  "keywords": [
+    "helpdesk",
+    "ticket-triage",
+    "human-in-the-loop",
+    "approval-queue",
+    "audit-log",
+    "zod",
+    "sqlite"
+  ],
+  "author": "Alejandro",
+  "license": "MIT",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/node": "^22.13.9",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.7"
+  }
+}
