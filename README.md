@@ -7,6 +7,8 @@
 [![SQLite](https://img.shields.io/badge/Storage-Better--SQLite3-003B57.svg?logo=sqlite&logoColor=white)](https://github.com/WiseLibs/better-sqlite3)
 [![License: MIT](https://img.shields.io/badge/License-MIT-teal.svg)](LICENSE)
 
+*Versión en español: [README.es.md](README.es.md)*
+
 A small triage tool for a support team. It reads tickets, runs configurable rules, and **proposes** who should take each one. Nothing is assigned until a person approves the proposal from the command line. Every proposal and decision is written to an append-only audit log in SQLite.
 
 It also builds a daily Markdown report and a mail digest that lists only unread mail from the last 48 hours that asks you to do something. Marking that mail as read is itself a proposal that needs approval.
