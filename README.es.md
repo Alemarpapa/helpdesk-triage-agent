@@ -23,7 +23,7 @@ También arma un reporte diario en Markdown y un resumen de correo que lista sol
 
 ## Inicio rápido
 
-Requiere Node.js 20 o superior. Los comandos, la salida real de ejemplo y el formato del archivo de reglas están en [README.md](README.md#-quickstart). `npm test` corre 60 tests de Vitest: motor de reglas, cola de aprobación (decisiones dobles, aprobaciones concurrentes, tickets viejos, fallas del adaptador), auditoría de solo agregado, borde de la ventana del resumen, reporte y la CLI de punta a punta.
+Requiere Node.js 20 o superior. Los comandos, la salida real de ejemplo y el formato del archivo de reglas están en [README.md](README.md#-quickstart). `npm test` corre 68 tests de Vitest: motor de reglas, cola de aprobación (decisiones dobles, aprobaciones concurrentes, tickets viejos, fallas del adaptador), auditoría de solo agregado, borde de la ventana del resumen, reporte y la CLI de punta a punta.
 
 ## Límites conocidos
 

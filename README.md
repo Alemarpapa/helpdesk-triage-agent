@@ -147,7 +147,7 @@ All conditions inside `when` must match; values inside one condition are alterna
 
 ```bash
 npm run typecheck   # strict TypeScript over src/ and tests/
-npm test            # 60 Vitest tests
+npm test            # 68 Vitest tests
 ```
 
 The suite covers the rule engine, the approval gate (double decisions, concurrent approvals, stale tickets, adapter failures), the append-only audit log, the digest window boundary, the report, and the CLI end to end against a temporary directory.

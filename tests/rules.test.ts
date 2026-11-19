@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { containsKeyword, ruleMatches, suggestAssignee } from '../src/rules.js';
-import { RulesConfigSchema, TicketSchema } from '../src/schemas.js';
+import { MailMessageSchema, ProposalPayloadSchema, RulesConfigSchema, TicketSchema } from '../src/schemas.js';
 import { config, ticket } from './helpers.js';
 
 describe('keyword matching', () => {
@@ -54,6 +54,17 @@ describe('suggestAssignee', () => {
     expect(s.assigneeId).toBe('tech-b');
   });
 
+  it('lets a condition-less rule shadow every rule listed after it', () => {
+    const cfg = config({
+      rules: [
+        { id: 'catch-all', candidates: ['tech-a'] },
+        { id: 'billing', when: { keywords: ['invoice'] }, candidates: ['tech-b'] }
+      ]
+    });
+    const s = suggestAssignee(ticket({ id: 't', subject: 'Invoice problem' }), cfg, new Map());
+    expect(s).toMatchObject({ assigneeId: 'tech-a', ruleId: 'catch-all' });
+  });
+
   it('returns no assignee (not a random one) when every candidate is full', () => {
     const t = ticket({ id: 't', subject: 'refund please' });
     const s = suggestAssignee(t, config(), new Map([['tech-b', 2]]));
@@ -88,5 +99,13 @@ describe('schema guardrails', () => {
     expect(TicketSchema.safeParse({ ...base, priority: 'critical' }).success).toBe(false);
     expect(TicketSchema.safeParse({ ...base, createdAt: 'yesterday' }).success).toBe(false);
     expect(TicketSchema.safeParse({ ...base, subject: '   ' }).success).toBe(false);
+  });
+
+  it('rejects malformed mail and proposal payloads before they reach the queue', () => {
+    const msg = { id: 'm', from: 'a@b.example', receivedAt: '2026-03-10T10:00:00Z', unread: true };
+    expect(MailMessageSchema.safeParse(msg).success).toBe(true);
+    expect(MailMessageSchema.safeParse({ ...msg, unread: 'yes' }).success).toBe(false);
+    expect(ProposalPayloadSchema.safeParse({ kind: 'mark_mail_read', messageIds: [] }).success).toBe(false);
+    expect(ProposalPayloadSchema.safeParse({ kind: 'delete_ticket', ticketId: 't' }).success).toBe(false);
   });
 });

@@ -90,4 +90,20 @@ describe('CLI end to end (example data, state persisted between commands)', () =
     await expect(run('explode')).rejects.toThrow(/Unknown command/);
     await expect(run('init')).rejects.toThrow(/already has data/);
   });
+
+  it('lets the approver pick another technician with --assignee, and rejects an unknown one', async () => {
+    await run('init');
+    await run('propose');
+    await expect(run('approve', '1', '--by', 'alex', '--assignee', 'ghost')).rejects.toThrow(/Unknown technician/);
+    expect(assignee('T-1001')).toBeNull();
+    await run('approve', '1', '--by', 'alex', '--assignee', 'tech-omar');
+    expect(assignee('T-1001')).toBe('tech-omar');
+  });
+
+  it('refuses to run with a rules file that fails validation', async () => {
+    await run('init');
+    const badRules = path.join(dir, 'rules.json');
+    fs.writeFileSync(badRules, JSON.stringify({ technicians: [{ id: 'a', name: 'A' }], rules: [{ id: 'r', candidates: ['ghost'] }] }));
+    await expect(run('propose', '--config', badRules)).rejects.toThrow(/Invalid rules config: .*unknown technician 'ghost'/);
+  });
 });

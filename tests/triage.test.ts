@@ -56,6 +56,19 @@ describe('proposing assignments', () => {
     expect(created[0].payload).toMatchObject({ ticketId: 'urgent' });
   });
 
+  it('counts open tickets already assigned in the helpdesk, but not resolved ones', async () => {
+    setup([
+      ticket({ id: 'a1', assigneeId: 'tech-a', status: 'in_progress' }),
+      ticket({ id: 'a2', assigneeId: 'tech-a' }),
+      ticket({ id: 'a3', assigneeId: 'tech-b', status: 'resolved' }),
+      ticket({ id: 'a4', assigneeId: 'tech-b', status: 'resolved' }),
+      ticket({ id: 'new' })
+    ]);
+    // tech-a is at its limit of 2; tech-b's two tickets are resolved so they take no capacity.
+    const [p] = await service.proposeAssignments();
+    expect(p.payload).toMatchObject({ ticketId: 'new', assigneeId: 'tech-b' });
+  });
+
   it('the database refuses a second pending proposal for the same ticket', () => {
     const payload = { kind: 'assign_ticket', ticketId: 'T-1', assigneeId: 'tech-a', ruleId: null } as const;
     store.createProposal(payload, 'first');
@@ -123,6 +136,15 @@ describe('approving', () => {
     expect(store.getProposal(p.id)?.status).toBe('pending');
   });
 
+  it('will not assign a ticket that was resolved after the proposal was created', async () => {
+    const [p] = await service.proposeAssignments();
+    helpdesk = new InMemoryHelpdesk([ticket({ id: 'T-1', status: 'resolved' }), ticket({ id: 'T-2' })]);
+    service = new TriageService(helpdesk, mailbox, store, config());
+    await expect(service.approve(p.id, 'alex')).rejects.toThrow(/already resolved/);
+    expect((await helpdesk.getTicket('T-1'))?.assigneeId).toBeNull();
+    expect(store.getProposal(p.id)?.status).toBe('pending');
+  });
+
   it('returns the proposal to the queue and audits the failure when the helpdesk call fails', async () => {
     const [p] = await service.proposeAssignments();
     helpdesk.assignTicket = async () => {
@@ -179,6 +201,25 @@ describe('mail digest approval', () => {
     expect((await service.proposeMailDigest('lead@helpdesk.example', NOW)).proposal).toBeNull();
     expect((await service.proposeMailDigest('nobody@helpdesk.example', NOW)).items).toEqual([]);
     expect(store.listProposals()).toHaveLength(1);
+  });
+
+  it('queues only messages that are not already in a pending digest proposal', async () => {
+    setup([], [mail({ id: 'm-1' })]);
+    await service.proposeMailDigest('lead@helpdesk.example', NOW);
+    mailbox = new InMemoryMail([mail({ id: 'm-1' }), mail({ id: 'm-2', receivedAt: '2026-03-10T11:00:00Z' })]);
+    service = new TriageService(helpdesk, mailbox, store, config());
+    const { items, proposal } = await service.proposeMailDigest('lead@helpdesk.example', NOW);
+    expect(items.map((i) => i.id)).toEqual(['m-2', 'm-1']); // the digest still shows both...
+    expect(proposal?.payload).toEqual({ kind: 'mark_mail_read', messageIds: ['m-2'] }); // ...but only m-2 is new
+  });
+
+  it('marks nothing as read when one listed message no longer exists', async () => {
+    const { proposal } = await service.proposeMailDigest('lead@helpdesk.example', NOW);
+    mailbox = new InMemoryMail([mail({ id: 'other' })]);
+    service = new TriageService(helpdesk, mailbox, store, config());
+    await expect(service.approve(proposal!.id, 'alex')).rejects.toThrow(/pending again: Message 'm-1' not found/);
+    expect((await mailbox.listMessages())[0].unread).toBe(true);
+    expect(store.getProposal(proposal!.id)?.status).toBe('pending');
   });
 
   it('refuses an assignee override on a mail proposal', async () => {
